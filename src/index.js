@@ -3,11 +3,7 @@ import 'firebase/firestore';
 
 const config = {
 	apiKey: "AIzaSyCti20Ws0BJfld1ebMJZ6RMaZolQnOFCVY",
-	authDomain: "audioalerts-production.firebaseapp.com",
-	databaseURL: "https://audioalerts-production.firebaseio.com",
 	projectId: "audioalerts-production",
-	storageBucket: "audioalerts-production.appspot.com",
-	messagingSenderId: "586581071667",
 	appId: "1:586581071667:web:b3e42a0febb87bcb"
 };
 
