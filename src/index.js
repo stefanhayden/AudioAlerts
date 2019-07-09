@@ -34,7 +34,7 @@ const fn = function(key = '', val = 1) {
 	return new Promise((resolve, reject) => {
 		tiny_ajax(
 			'post',
-			`https://firestore.googleapis.com/v1beta1/projects/${config.projectId}/databases/(default)/documents/dings/${window.AudioAlerts._accountId}/ding?key=${config.apiKey}`,
+			`https://firestore.googleapis.com/v1beta1/projects/${config.projectId}/databases/(default)/documents/dings/${accountId}/ding?key=${config.apiKey}`,
 			(xhr) => {
 				xhr.addEventListener('load', () => resolve('LOAD'));
 				xhr.addEventListener('error', () => reject('ERROR'));

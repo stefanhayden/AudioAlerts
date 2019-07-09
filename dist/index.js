@@ -35,7 +35,7 @@ var fn = function fn() {
   }
 
   return new Promise(function (resolve, reject) {
-    tiny_ajax('post', "https://firestore.googleapis.com/v1beta1/projects/".concat(config.projectId, "/databases/(default)/documents/dings/").concat(window.AudioAlerts._accountId, "/ding?key=").concat(config.apiKey), function (xhr) {
+    tiny_ajax('post', "https://firestore.googleapis.com/v1beta1/projects/".concat(config.projectId, "/databases/(default)/documents/dings/").concat(accountId, "/ding?key=").concat(config.apiKey), function (xhr) {
       xhr.addEventListener('load', function () {
         return resolve('LOAD');
       });
