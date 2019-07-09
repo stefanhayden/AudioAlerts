@@ -1,25 +1,25 @@
 "use strict";
 
-var _app = _interopRequireDefault(require("firebase/app"));
-
-require("firebase/firestore");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var tiny_ajax = function tiny_ajax(m, // method - get, post, whatever
+u, // url
+c, // [callback] if passed -> asych call
+d, // [post_data]
+x) {
+  x = new XMLHttpRequest();
+  x.open(m, u, c), // open connection with Method and Url and asyCh flag
+  x.send(d), // send Data
+  x.onreadystatechange = function () {
+    // filter only readyState=4 events
+    x.readyState ^ 4 || c(this); // if callback passed and readyState == 4 than trigger Callback with xhr object
+  };
+  return x;
+};
 
 var config = {
   apiKey: "AIzaSyCti20Ws0BJfld1ebMJZ6RMaZolQnOFCVY",
-  authDomain: "audioalerts-production.firebaseapp.com",
-  databaseURL: "https://audioalerts-production.firebaseio.com",
   projectId: "audioalerts-production",
-  storageBucket: "audioalerts-production.appspot.com",
-  messagingSenderId: "586581071667",
   appId: "1:586581071667:web:b3e42a0febb87bcb"
 };
-
-_app["default"].initializeApp(config);
-
-var db = _app["default"].firestore();
-
 var installed = false;
 var accountId = '';
 var siteId = '';
@@ -34,22 +34,45 @@ var fn = function fn() {
     return;
   }
 
-  return db.collection("dings/".concat(accountId, "/ding")).add({
-    accountId: accountId,
-    siteId: siteId,
-    key: key,
-    val: val,
-    timestamp: new Date()
-  }).then(function () {
-    return;
+  return new Promise(function (resolve, reject) {
+    tiny_ajax('post', "https://firestore.googleapis.com/v1beta1/projects/".concat(config.projectId, "/databases/(default)/documents/dings/").concat(window.AudioAlerts._accountId, "/ding?key=").concat(config.apiKey), function (xhr) {
+      xhr.addEventListener('load', function () {
+        return resolve('LOAD');
+      });
+      xhr.addEventListener('error', function () {
+        return reject('ERROR');
+      });
+      xhr.addEventListener('abort', function () {
+        return reject('ABORT');
+      });
+      xhr.addEventListener('timeout', function () {
+        return reject('TIMEOUT');
+      });
+    }, JSON.stringify({
+      fields: {
+        accountId: {
+          stringValue: accountId
+        },
+        siteId: {
+          stringValue: siteId
+        },
+        key: {
+          stringValue: key
+        },
+        val: {
+          integerValue: val
+        },
+        timestamp: {
+          timestampValue: new Date()
+        }
+      }
+    }));
   });
 };
 
 function AudioAlerts(_ref) {
   var _accountId = _ref.accountId,
       _siteId = _ref.siteId;
-  accountId = _accountId;
-  siteId = _siteId;
 
   if (installed) {
     console.error('You can only install AudioAlerts once'); // eslint-disable-line
@@ -57,6 +80,8 @@ function AudioAlerts(_ref) {
     return;
   }
 
+  accountId = _accountId;
+  siteId = _siteId;
   installed = true;
 }
 
