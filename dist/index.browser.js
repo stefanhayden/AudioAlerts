@@ -1,5 +1,7 @@
 "use strict";
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 var tiny_ajax = function tiny_ajax(m, // method - get, post, whatever
 u, // url
 c, // [callback] if passed -> asych call
@@ -85,7 +87,14 @@ function AudioAlerts(_ref) {
   installed = true;
 }
 
-module.exports.AudioAlerts = {
-  install: AudioAlerts,
-  alert: fn
-};
+if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && typeof module !== 'undefined') {
+  module.exports.AudioAlerts = {
+    install: AudioAlerts,
+    alert: fn
+  };
+} else {
+  (void 0).AudioAlerts = {
+    install: AudioAlerts,
+    alert: fn
+  };
+}

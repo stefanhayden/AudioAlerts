@@ -1,6 +1,6 @@
 {
   "name": "audioalerts",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Library to interact with AudioAlerts.io, an audio site monitoring tool",
   "main": "dist/index.server.js",
   "broswer": "dist/index.browser.js",

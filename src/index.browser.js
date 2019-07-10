@@ -67,7 +67,14 @@ function AudioAlerts({ accountId: _accountId, siteId: _siteId }) {
 	installed = true;
 }
 
-module.exports.AudioAlerts = {
-	install: AudioAlerts,
-	alert: fn,
-};
+if (typeof exports === 'object' && typeof module !== 'undefined') {
+  module.exports.AudioAlerts = {
+    install: AudioAlerts,
+    alert: fn
+  };
+} else {
+  this.AudioAlerts = {
+    install: AudioAlerts,
+    alert: fn
+  };
+}
