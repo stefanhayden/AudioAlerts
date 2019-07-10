@@ -1,7 +1,7 @@
-AudioAlerts.io Browser Agent
+AudioAlerts.io JS Agent
 ===============
 
-The browser agent for triggering dings, cheers, chimes, and bings. 
+The JS agent for triggering dings, cheers, chimes, and bings from both the browser and server. 
 Don't spend time looking at dashboard when you can be audibly notified.
 
 
