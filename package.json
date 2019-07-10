@@ -1,6 +1,6 @@
 {
   "name": "audioalerts",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "Library to interact with AudioAlerts.io, an audio site monitoring tool",
   "main": "dist/index.server.js",
   "broswer": "dist/index.browser.js",
@@ -8,6 +8,14 @@
     "type": "git",
     "url": "github:stefanhayden/audioalerts"
   },
+	"keywords": [
+		"audioalerts",
+		"analytics",
+		"api",
+		"stats",
+		"audio",
+		"sound"
+	],
   "author": {
     "name": "AudioAlerts.io",
     "email": "support@audioalerts.io",
