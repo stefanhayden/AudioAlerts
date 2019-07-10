@@ -29,7 +29,7 @@ import { AudioAlerts } from 'audioalerts';
 AudioAlerts.install({ accountId: 'YOUR_ACCOUNT_ID', siteId: 'YOUR_SITE_ID' });
 ```
 
-4. Test it out by calling `AudioAlerts.track()` somewhere in your
+4. Test it out by calling `AudioAlerts.alert()` somewhere in your
 application.
 5. You should hear an alert on [AudioAlerts](https://audioalerts.io/) instantaneously.
 

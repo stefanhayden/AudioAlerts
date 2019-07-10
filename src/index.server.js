@@ -1,4 +1,4 @@
-var request = require('request');
+const https = require('https');
 
 const config = {
 	apiKey: "AIzaSyCti20Ws0BJfld1ebMJZ6RMaZolQnOFCVY",
@@ -16,50 +16,47 @@ const fn = function(key = '', val = 1) {
 		return;
 	}
 
-	return new Promise((resolve, reject) => {
-		var options = {
-			uri: `https://firestore.googleapis.com/v1beta1/projects/${config.projectId}/databases/(default)/documents/dings/${accountId}/ding?key=${config.apiKey}`,
-			method: 'POST',
-			json: {
-				fields: {
-					accountId: { stringValue: accountId },
-					siteId: { stringValue: siteId },
-					key: { stringValue: key },
-					val: { integerValue: val },
-					timestamp: { timestampValue: new Date() },
-				}
-			}
-		};
+	const postData = JSON.stringify({
+		fields: {
+			accountId: { stringValue: accountId },
+			siteId: { stringValue: siteId },
+			key: { stringValue: key },
+			val: { integerValue: val },
+			timestamp: { timestampValue: new Date() },
+		}
+	})
 
-		request(options, function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				resolve('LOAD');
-			} else {
-				reject('ERROR')
-			}
+	var options = {
+		hostname: 'firestore.googleapis.com',
+		path: `/v1beta1/projects/${config.projectId}/databases/(default)/documents/dings/${accountId}/ding?key=${config.apiKey}`,
+		method: 'POST',
+		headers: {
+		 'Content-Type': 'application/json',
+		 'Content-Length': postData.length
+	 }
+	};
+
+	return new Promise((resolve, reject) => {
+		var req = https.request(options, (res) => {
+			console.log('statusCode:', res.statusCode);
+			console.log('headers:', res.headers);
+
+			res.on('data', (d) => {
+				resolve({
+					data: d,
+					statusCode: res.statusCode,
+					statusMessage: res.statusMessage,
+					headers: res.headers,
+				});
+			});
 		});
 
-/*
-		tiny_ajax(
-			'post',
-			`https://firestore.googleapis.com/v1beta1/projects/${config.projectId}/databases/(default)/documents/dings/${accountId}/ding?key=${config.apiKey}`,
-			(xhr) => {
-				xhr.addEventListener('load', () => resolve('LOAD'));
-				xhr.addEventListener('error', () => reject('ERROR'));
-				xhr.addEventListener('abort', () => reject('ABORT'));
-				xhr.addEventListener('timeout', () => reject('TIMEOUT'));
-			},
-			JSON.stringify({
-				fields: {
-					accountId: { stringValue: accountId },
-					siteId: { stringValue: siteId },
-					key: { stringValue: key },
-					val: { integerValue: val },
-					timestamp: { timestampValue: new Date() },
-				}
-			})
-		);
-*/
+		req.on('error', (e) => {
+			reject(e);
+		});
+
+		req.write(postData);
+		req.end();
 	});
 
 };
